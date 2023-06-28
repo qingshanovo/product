@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.product.dao.QualitieMapper">
+
+    <select id="getQualitieList" resultType="com.my.product.entity.Qualitie">
+        SELECT q.*,r.score score FROM `qualities` as q
+        inner join result as r
+        on q.id = r.productId
+        <where>
+          <if test="productName !=null and productName != ''">
+             and  productName LIKE CONCAT('%',#{productName},'%')
+          </if>
+      </where>
+        ORDER BY productDate desc
+      limit #{startIndex},#{pageSize}
+    </select>
+    <select id="getCount" parameterType="string" resultType="int">
+        SELECT count(*) FROM `qualities`
+        <where>
+            <if test="productName !=null and productName != ''">
+                and  productName LIKE CONCAT('%',#{productName},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="add" parameterType="com.my.product.entity.Qualitie" useGeneratedKeys="true" keyProperty="id">
+INSERT INTO productdb.qualities
+	(
+	productName,
+	productDate,
+	productSum,
+	productDesc,
+	productPrice
+	)
+	VALUES
+	(
+	#{productName},
+	#{productDate},
+	#{productSum},
+	#{productDesc},
+	#{productPrice}
+	);
+
+    </insert>
+    <select id="getAll" resultType="com.my.product.entity.Qualitie" >
+        SELECT q.id,q.productName
+         FROM `qualities` as q
+         inner join result as r
+         on q.id = r.productId
+         where r.score = 0
+    </select>
+</mapper>

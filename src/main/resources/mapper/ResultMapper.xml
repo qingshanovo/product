@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.product.dao.ResultMapper">
+
+    <update id="modifyQuitlies" >
+        update result
+        <set>
+            <if test="score !=null" >
+                score = #{score},
+            </if>
+            <if test="qualityDesc !=null" >
+                qualityDesc = #{qualityDesc},
+            </if>
+        </set>
+        where productId = #{productId}
+    </update>
+    <insert id="add" parameterType="int">
+    INSERT INTO productdb.result
+	(score,qualityDesc,productId)
+	VALUES(0,null,#{productId});
+    </insert>
+</mapper>
